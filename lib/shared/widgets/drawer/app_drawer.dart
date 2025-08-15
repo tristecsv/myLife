@@ -1,4 +1,7 @@
-// lib/shared/widgets/drawer/app_drawer.dart
+// El siguiente código es parte de un package llamado flutter_zoom_drawer,
+// se extrajo de ahi para irlo manteniendo y adaptando a las necesidades de este proyecto.
+// El código original se encuentra en https://github.com/medyas/flutter_zoom_drawer
+
 import 'dart:math' show min, pi;
 
 import 'package:flutter/foundation.dart';
@@ -58,8 +61,8 @@ class ZoomDrawer extends StatefulWidget {
     this.showShadow = true,
     this.openCurve = const Interval(0.0, 1.0, curve: Curves.easeOut),
     this.closeCurve = const Interval(0.0, 1.0, curve: Curves.easeOut),
-    this.duration = const Duration(milliseconds: 250),
-    this.reverseDuration = const Duration(milliseconds: 250),
+    this.duration = const Duration(milliseconds: 300),
+    this.reverseDuration = const Duration(milliseconds: 300),
     this.androidCloseOnBackTap = false,
     this.moveMenuScreen = true,
     this.disableDragGesture = false,
@@ -68,7 +71,7 @@ class ZoomDrawer extends StatefulWidget {
     this.boxShadow,
     this.drawerStyleBuilder,
     this.onAnimationValueChange,
-    this.dragThreshold = 0.35, // nuevo: umbral configurable
+    this.dragThreshold = 0.35,
   });
 
   final MyDrawerController? controller;
@@ -133,19 +136,16 @@ class ZoomDrawerState extends State<ZoomDrawer>
   void initState() {
     super.initState();
 
-    // Inicializamos el AnimationController aquí (mejor práctica).
     _animationController = AnimationController(
       vsync: this,
       duration: widget.duration,
-      reverseDuration:
-          widget.reverseDuration, // usar reverseDuration correctamente
+      reverseDuration: widget.reverseDuration,
     )
       ..addStatusListener(_animationStatusListener)
       ..addListener(() => widget.onAnimationValueChange?.call(_animationValue));
 
     _absorbingMainScreen = ValueNotifier(widget.mainScreenAbsorbPointer);
 
-    // Asignamos el controller externo (si existe)
     _assignToController();
   }
 
@@ -153,13 +153,10 @@ class ZoomDrawerState extends State<ZoomDrawer>
   void didUpdateWidget(covariant ZoomDrawer oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Si cambia el controller externo, reasignamos
     if (oldWidget.controller != widget.controller) {
       _assignToController();
     }
 
-    // Si cambió la duración, recreamos el AnimationController para evitar inconsistencias.
-    // (Opcional: podrías solo actualizar duration si supports)
     if (oldWidget.duration != widget.duration ||
         oldWidget.reverseDuration != widget.reverseDuration) {
       final oldValue = _animationController.value;
@@ -172,14 +169,13 @@ class ZoomDrawerState extends State<ZoomDrawer>
         vsync: this,
         duration: widget.duration,
         reverseDuration: widget.reverseDuration,
-        value: oldValue, // reutilizamos el progreso actual
+        value: oldValue,
       )
         ..addStatusListener(_animationStatusListener)
         ..addListener(
             () => widget.onAnimationValueChange?.call(_animationValue));
     }
 
-    // Si cambió mainScreenAbsorbPointer, actualizamos el notifier inicial
     if (oldWidget.mainScreenAbsorbPointer != widget.mainScreenAbsorbPointer) {
       _absorbingMainScreen.value = widget.mainScreenAbsorbPointer;
     }
@@ -335,7 +331,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
     switch (stateNotifier.value) {
       case DrawerState.closed:
         slidePercent = 0.0;
-        scalePercent = 0.0;
+        scalePercent = 0.0; //
         break;
       case DrawerState.open:
         slidePercent = 1.0;
@@ -515,12 +511,11 @@ class ZoomDrawerState extends State<ZoomDrawer>
     return parentWidget;
   }
 
-  /// Decide qué pasa cuando el usuario presiona back (Android): si el drawer está abierto lo cierra y evita pop.
   bool _canPop() {
     if ([DrawerState.open, DrawerState.opening].contains(stateNotifier.value)) {
       close();
-      return false; // no permitir que el Navigator haga pop
+      return false;
     }
-    return true; // permitir pop normal
+    return true;
   }
 }
