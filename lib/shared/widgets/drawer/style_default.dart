@@ -1,3 +1,7 @@
+// El siguiente código es parte de un package llamado flutter_zoom_drawer,
+// se extrajo de ahi para irlo manteniendo y adaptando a las necesidades de este proyecto.
+// El código original se encuentra en https://github.com/medyas/flutter_zoom_drawer
+
 import 'package:flutter/material.dart';
 
 class StyleDefault extends StatelessWidget {
