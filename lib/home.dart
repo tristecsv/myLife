@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:mylife/features/expenses/ui/expenses_screen.dart';
 import 'package:mylife/shared/models/menu_entry.dart';
 import 'package:mylife/shared/widgets/drawer/app_drawer.dart';
 import 'package:mylife/shared/widgets/menu/menu_drawer.dart';
@@ -32,32 +33,42 @@ class _HomeState extends State<Home> {
 
   void _onSelect(int index) {
     setState(() => _selectedIndex = index);
-    if (_drawerController.close != null) _drawerController.close!();
+    _drawerController.close?.call();
   }
 
   Widget _buildMain() {
-    // muestra contenido según _selectedIndex (placeholder)
     final entry = menuItems[_selectedIndex];
+
+    switch (entry.id) {
+      case 'expenses':
+        return const ExpensesScreen(); // tu pantalla de gastos
+      // añade casos reales si ya tienes implementadas las pantallas
+      case 'dashboard':
+        return _placeholderScaffold(entry.label);
+      case 'exercise':
+      case 'notes':
+      case 'calendar':
+      case 'school_notes':
+      case 'schedules':
+      case 'habits':
+      default:
+        return _placeholderScaffold(entry.label);
+    }
+  }
+
+  Widget _placeholderScaffold(String title) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () => _drawerController.toggle?.call(),
         ),
-        title: Text(entry.label),
+        title: Text(title),
       ),
-      body: Center(
-        child: Text(
-          'Pantalla: ${entry.label}',
-          style: const TextStyle(fontSize: 20),
-        ),
-      ),
+      body: Center(child: Text('Placeholder for $title')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Acción en ${entry.label}')),
-          );
-        },
+        onPressed: () => ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Action in $title'))),
         child: const Icon(Icons.add),
       ),
     );
@@ -69,7 +80,7 @@ class _HomeState extends State<Home> {
       body: ZoomDrawer(
         controller: _drawerController,
         drawerShadowsBackgroundColor: Theme.of(context).colorScheme.background,
-        menuBackgroundColor: Colors.grey.shade300,
+        menuBackgroundColor: Theme.of(context).drawerTheme.backgroundColor!,
         mainScreen: _buildMain(),
         menuScreen: MenuDrawer(
           items: menuItems,

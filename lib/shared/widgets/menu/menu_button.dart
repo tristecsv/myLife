@@ -19,9 +19,10 @@ class MenuButton extends StatelessWidget {
     final bg = active
         ? Theme.of(context).colorScheme.primary.withOpacity(0.14)
         : Colors.transparent;
-    final color = active
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).textTheme.bodyLarge?.color;
+    final color = Theme.of(context).textTheme.bodyLarge?.color;
+    // final color = active
+    //     ? Theme.of(context).colorScheme.primary
+    //     : Theme.of(context).textTheme.bodyLarge?.color;
     return Material(
       color: Colors.transparent,
       child: InkWell(
