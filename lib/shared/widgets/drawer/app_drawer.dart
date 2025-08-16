@@ -331,7 +331,7 @@ class ZoomDrawerState extends State<ZoomDrawer>
     switch (stateNotifier.value) {
       case DrawerState.closed:
         slidePercent = 0.0;
-        scalePercent = 0.0; //
+        scalePercent = 0.0;
         break;
       case DrawerState.open:
         slidePercent = 1.0;

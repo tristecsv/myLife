@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mylife/shared/models/menu_entry.dart';
 import 'package:mylife/shared/widgets/menu/menu_button.dart';
+import 'package:mylife/shared/widgets/menu/theme_button.dart';
 
 class MenuDrawer extends StatelessWidget {
   final List<MenuEntry> items;
@@ -33,12 +34,16 @@ class MenuDrawer extends StatelessWidget {
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'miLife',
+                      'MiLife',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 40.0),
+                    child: ThemeButton(),
                   ),
                 ],
               ),
